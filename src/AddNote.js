@@ -3,7 +3,6 @@ import './AddNote.css'
 import {Link} from 'react-router-dom'
 export default function AddNote(props) {
     const folders = props
-    console.log(props)
     return (
         <>
             <form>

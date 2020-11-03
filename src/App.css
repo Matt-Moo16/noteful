@@ -46,3 +46,7 @@ h1 {
   text-align: center;
 }
 
+button {
+  background-color: darkred;
+  margin-bottom: 6px;
+}

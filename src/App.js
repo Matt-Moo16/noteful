@@ -10,19 +10,59 @@ import './App.css'
 import AddFolder from './AddFolder'
 import NoteInfo from './NoteInfo';
 import AddNote from './AddNote'
-// finish creating the routes
-// add some styling 
-// figure out the history thing
-// rewatch that video on react router
+import Context from './Context'
 
 
 
 class App extends Component {
-  state = dummyStore
+  state = {
+    notes: [],
+    folders: [],
+    handleDeleteNote: this.handleDeleteNote
+  }
+
+  componentDidMount() {
+    Promise.all([
+      fetch(`http://localhost:9090/folders`),
+      fetch(`http://localhost:9090/notes`)
+    ])
+    .then(([foldersResponse, notesResponse]) => {
+      if (!foldersResponse.ok) {
+        alert('Something went wrong')
+      }
+      if (!notesResponse.ok) {
+        alert('Something went wrong')
+      }
+      
+      return Promise.all([foldersResponse.json(), notesResponse.json()])
+      
+      .then(([folders, notes]) => {
+        this.setState({folders, notes})
+      })
+      .catch(error => {
+        console.error({error})
+      })
+
+    }) 
+  }
+  
+  handleDeleteNote = noteId => {
+    return fetch(`http://localhost:9090/notes/${noteId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json'
+      },
+    })
+    .then(() => {
+      this.setState({notes: this.state.notes.filter(note => note.id != noteId)})
+    })
+  }
+
 
 
   render() {
     return (
+      <Context.Provider value={{...this.state, handleDeleteNote: this.handleDeleteNote}}>
         <>
         <header>
           <h1>
@@ -60,7 +100,7 @@ class App extends Component {
           }/>
         </Main>
         </>
-      
+        </Context.Provider>
     );
   }
 }

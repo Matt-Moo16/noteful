@@ -6,8 +6,9 @@ export default function FolderList(props) {
     return (
         <>
             <ul>
-                {props.folders.map(folder => 
-                    <li id={folder.id}>
+                {props.folders.map((folder, i) => 
+                    <li id={folder.id}
+                    key={i}>
                         <NavLink to={`/folder/${folder.id}`}  activeStyle={{
     fontWeight: "bold",
     color: "blue"
@@ -17,7 +18,8 @@ export default function FolderList(props) {
                     </li>
                 )}
             </ul>
-            <Link to='/folder/new'>Add Folder</Link>
+            <Link to='/folder/new'
+            className='add'>Add Folder</Link>
         </>
     )
 }

@@ -7,8 +7,9 @@ function NoteList(props) {
   return (
     <>
     <ul>
-      {notes.map(note => 
-        <li folderid = {note.folderId}>
+      {notes.map((note, i) => 
+        <li folderid = {note.folderId}
+        key={i}>
           <Note 
           id = {note.id}
           name = {note.name}
@@ -18,7 +19,8 @@ function NoteList(props) {
       )}    
     </ul>
     {notes.length > 0 && 
-      <Link to='/note-new'>Add Note</Link>
+      <Link to='/note-new'
+      className='add'>Add Note</Link>
     }
     </>
    )
