@@ -1,6 +1,6 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import NoteList from './NoteList' 
+import PropTypes from 'prop-types'
 
 
 export default function Folder(props) {
@@ -10,4 +10,8 @@ export default function Folder(props) {
         <NoteList notes={notes}/> 
         </>
     )
+}
+
+Folder.propTypes = {
+    notes: PropTypes.array.isRequired
 }

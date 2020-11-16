@@ -6,7 +6,6 @@ import Context from './Context'
 
 class Note extends Component {
     static contextType = Context
-
     render() {
         return (
             <>  

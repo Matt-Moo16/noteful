@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Link, BrowserRouter as Router} from 'react-router-dom'
-import dummyStore from './dummy-store'
+import {Route, Link} from 'react-router-dom'
 import FolderList from './FolderList'
 import Sidebar from './Sidebar'
 import Main from './Main'
@@ -11,6 +10,7 @@ import AddFolder from './AddFolder'
 import NoteInfo from './NoteInfo';
 import AddNote from './AddNote'
 import Context from './Context'
+import ErrorPage from './ErrorPage'
 
 
 
@@ -58,11 +58,54 @@ class App extends Component {
     })
   }
 
+  handleAddNote = note => {
+    return fetch(`http://localhost:9090/notes`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(note)
+    })
+    .then(response => {
+      if(!response.ok) {
+        alert('Something went wrong')
+      }
+      return response.json()
+      
+    })
+    .then((responseJson) => {
+      this.setState({notes: [...this.state.notes, responseJson]})
+    })
+  }
+
+  handleAddFolder = folder => {
+    return fetch(`http://localhost:9090/folders`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(folder)
+    })
+    .then(response => {
+      if(!response.ok) {
+        alert('Something went wrong')
+      }
+      return response.json()
+
+    })
+    .then((responseJson) => {
+      this.setState({folders: [...this.state.folders, responseJson]})
+    })
+  }
+
 
 
   render() {
     return (
-      <Context.Provider value={{...this.state, handleDeleteNote: this.handleDeleteNote}}>
+      <Context.Provider value={{...this.state, 
+        handleDeleteNote: this.handleDeleteNote, 
+      handleAddFolder: this.handleAddFolder,
+      handleAddNote: this.handleAddNote}}>
         <>
         <header>
           <h1>
@@ -80,18 +123,20 @@ class App extends Component {
           <Route exact path='/'>
             <NoteList notes={this.state.notes}/>
           </Route>
-          <Route exact path='/note-new' render={(routeProps) => {
-            const folders = this.state.folders
-            return <AddNote folders={folders} routeProps={routeProps}/>
-          }}>
-          </Route>
-          <Route exact path='/folder/:folderId' render={
-            (routeProps) => {
-              const folderId = routeProps.match.params.folderId
-              const notes = this.state.notes.filter(note => note.folderId === folderId)
-            return <Folder notes={notes} />
-          } 
-          }/>
+          <ErrorPage>
+            <Route exact path='/note-new' render={(routeProps) => {
+              const folders = this.state.folders
+              return <AddNote folders={folders} routeProps={routeProps}/>
+            }}>
+            </Route>
+          </ErrorPage >
+            <Route exact path='/folder/:folderId' render={
+              (routeProps) => {
+                const folderId = routeProps.match.params.folderId
+                const notes = this.state.notes.filter(note => note.folderId === folderId)
+              return <Folder notes={notes} />
+            } 
+            }/>
           <Route exact path='/note/:id' render={(routeProps) => {
             const noteId = routeProps.match.params.id
             const note = this.state.notes.filter(note => note.id === noteId)

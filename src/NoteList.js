@@ -1,8 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import Note from './Note'
+import PropTypes from 'prop-types'
 
-function NoteList(props) {
+export default function NoteList(props) {
   const {notes=[]} = props
   return (
     <>
@@ -26,4 +27,8 @@ function NoteList(props) {
    )
 }
 
-export default NoteList 
+NoteList.propType = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired, 
+  modified: PropTypes.string
+}
