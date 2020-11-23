@@ -54,7 +54,10 @@ class App extends Component {
       },
     })
     .then(() => {
-      this.setState({notes: this.state.notes.filter(note => note.id != noteId)})
+      this.setState({notes: this.state.notes.filter(note => note.id !== noteId)})
+    })
+    .catch(error => {
+      console.error({error})
     })
   }
 
@@ -76,6 +79,9 @@ class App extends Component {
     .then((responseJson) => {
       this.setState({notes: [...this.state.notes, responseJson]})
     })
+    .catch(error => {
+      console.error({error})
+    })
   }
 
   handleAddFolder = folder => {
@@ -95,6 +101,9 @@ class App extends Component {
     })
     .then((responseJson) => {
       this.setState({folders: [...this.state.folders, responseJson]})
+    })
+    .catch(error => {
+      console.error({error})
     })
   }
 
@@ -117,7 +126,9 @@ class App extends Component {
         </header>
         <Sidebar>
           <FolderList folders={this.state.folders} />
-          <Route exact path='/folder/new' component={AddFolder} /> 
+          <ErrorPage>
+            <Route exact path='/folder/new' component={AddFolder} /> 
+          </ErrorPage>
         </Sidebar>
         <Main className='App'>
           <Route exact path='/'>

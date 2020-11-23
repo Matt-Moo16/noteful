@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import moment from 'moment'
-import {format} from 'date-fns'
 import Context from './Context'
 import PropTypes from 'prop-types'
 

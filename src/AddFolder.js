@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
 import Context from './Context';
 
 export default class AddFolder extends Component {
@@ -43,6 +42,7 @@ export default class AddFolder extends Component {
                             onClick={e => this.context.handleAddFolder({"name": this.state.name.value})}></input>
                         </fieldset>
                     </form>
+                    <br />
                     <button onClick={() => this.props.history.goBack()}>Back</button>
                 </>
             )

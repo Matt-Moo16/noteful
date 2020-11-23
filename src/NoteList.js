@@ -19,9 +19,9 @@ export default function NoteList(props) {
         </li>
       )}    
     </ul>
-    {notes.length > 0 && 
-      <Link to='/note-new'
-      className='add'>Add Note</Link>
+    {notes.length >= 0 && 
+      <button><Link to='/note-new'
+      className='add'>Add Note</Link></button>
     }
     </>
    )

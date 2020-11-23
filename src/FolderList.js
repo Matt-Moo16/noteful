@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {NavLink, Link} from 'react-router-dom'
-import AddFolder from './AddFolder'
 import PropTypes from 'prop-types'
 
 export default function FolderList(props) {
@@ -19,8 +18,8 @@ export default function FolderList(props) {
                         </li>
                     )}
                 </ul>
-                <Link to='/folder/new'
-                className='add'>Add Folder</Link>
+                <button><Link to='/folder/new'
+                className='add'>Add Folder</Link></button>
             </>
         )
  

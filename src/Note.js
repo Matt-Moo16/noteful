@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
-import {format} from 'date-fns'
 import Context from './Context'
+import PropTypes from 'prop-types'
 
 class Note extends Component {
     static contextType = Context
@@ -32,3 +32,8 @@ class Note extends Component {
 }
 
 export default Note
+
+Note.propType = {
+    id: PropTypes.string.isRequired,
+    modified: PropTypes.string
+}

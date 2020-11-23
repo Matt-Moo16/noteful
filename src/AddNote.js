@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './AddNote.css'
-import {Link} from 'react-router-dom'
 import Context from './Context'
 import PropTypes from 'prop-types'
 export default class AddNote extends Component{
@@ -27,9 +26,7 @@ export default class AddNote extends Component{
     }
 
     updateFolderId(id) {
-        console.log(id)
         this.setState({folderId: id})
-        console.log(this.state)
     }
    
     validateTitle() {
