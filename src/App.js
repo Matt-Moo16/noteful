@@ -51,7 +51,6 @@ class App extends Component {
       
       .then(([folders, notes]) => {
         this.setState({folders, notes})
-        console.log(this.state.notes)
       })
       .catch(error => {
         console.error({error})
@@ -161,14 +160,13 @@ class App extends Component {
             <Route exact path='/folder/:folderId' render={
               (routeProps) => {
                 const folderId = routeProps.match.params.folderId
-                console.log(typeof(folderId))
                 const notes = this.state.notes.filter(note => note.folderId === parseInt(folderId))
               return <Folder notes={notes} />
             } 
             }/>
           <Route exact path='/note/:id' render={(routeProps) => {
             const noteId = routeProps.match.params.id
-            const note = this.state.notes.filter(note => note.id === noteId)
+            const note = this.state.notes.filter(note => note.id === parseInt(noteId))
             return <NoteInfo note={note}/>
             }
           }/>
