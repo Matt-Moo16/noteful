@@ -11,6 +11,7 @@ import NoteInfo from './NoteInfo';
 import AddNote from './AddNote'
 import Context from './Context'
 import ErrorPage from './ErrorPage'
+import config from './config'
 
 
 
@@ -23,8 +24,20 @@ class App extends Component {
 
   componentDidMount() {
     Promise.all([
-      fetch(`http://localhost:9090/folders`),
-      fetch(`http://localhost:9090/notes`)
+      fetch(config.FOLDERS_API_ENDPOINT, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer`+ config.API_KEY
+        }
+      }),
+      fetch(config.NOTES_API_ENDPOINT, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${config.API_KEY}`
+        }
+      })
     ])
     .then(([foldersResponse, notesResponse]) => {
       if (!foldersResponse.ok) {
@@ -38,6 +51,7 @@ class App extends Component {
       
       .then(([folders, notes]) => {
         this.setState({folders, notes})
+        console.log(this.state.notes)
       })
       .catch(error => {
         console.error({error})
@@ -47,10 +61,11 @@ class App extends Component {
   }
   
   handleDeleteNote = noteId => {
-    return fetch(`http://localhost:9090/notes/${noteId}`, {
+    return fetch(config.NOTES_API_ENDPOINT + `/${noteId}`, {
       method: 'DELETE',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${config.API_KEY}`
       },
     })
     .then(() => {
@@ -62,10 +77,11 @@ class App extends Component {
   }
 
   handleAddNote = note => {
-    return fetch(`http://localhost:9090/notes`, {
+    return fetch(config.NOTES_API_ENDPOINT, {
       method: 'POST',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${config.API_KEY}`
       },
       body: JSON.stringify(note)
     })
@@ -85,10 +101,11 @@ class App extends Component {
   }
 
   handleAddFolder = folder => {
-    return fetch(`http://localhost:9090/folders`, {
+    return fetch(config.FOLDERS_API_ENDPOINT, {
       method: 'POST',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${config.API_KEY}`
       },
       body: JSON.stringify(folder)
     })
@@ -144,7 +161,8 @@ class App extends Component {
             <Route exact path='/folder/:folderId' render={
               (routeProps) => {
                 const folderId = routeProps.match.params.folderId
-                const notes = this.state.notes.filter(note => note.folderId === folderId)
+                console.log(typeof(folderId))
+                const notes = this.state.notes.filter(note => note.folderId === parseInt(folderId))
               return <Folder notes={notes} />
             } 
             }/>
